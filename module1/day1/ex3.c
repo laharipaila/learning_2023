@@ -1,45 +1,46 @@
 #include <stdio.h>
 
-int main(){
+typedef struct {
+    int rollNo;
+    char name[50];
+    float physicsMarks;
+    float mathMarks;
+    float chemistryMarks;
+} Student;
 
-    float num1,num2;
-    int operator;
-    printf("Enter Number1 : ");
-    scanf("%f",&num1);
-    printf("1 for +\n2 for -\n3 for *\n4 for /\n");
-    printf("Enter the operator: ");
-    scanf("%d",&operator);
+void printSummary(Student student) {
+    float totalMarks = student.physicsMarks + student.mathMarks + student.chemistryMarks;
+    float percentage = (totalMarks / 300.0) * 100.0;
 
-    switch (operator)
-    {
-    case 1:
-        printf("Enter Number2 : ");
-        scanf("%f",&num2);
-        printf("%.2f\n",num1+num2);
-        break;
-    
-    case 2:
-        printf("Enter Number2 : ");
-        scanf("%f",&num2);
-        printf("%.2f\n",num1-num2);
-        break;
+    printf("Roll No: %d\n", student.rollNo);
+    printf("Name: %s\n", student.name);
+    printf("Physics Marks: %.2f\n", student.physicsMarks);
+    printf("Math Marks: %.2f\n", student.mathMarks);
+    printf("Chemistry Marks: %.2f\n", student.chemistryMarks);
+    printf("Total Marks: %.2f\n", totalMarks);
+    printf("Percentage: %.2f%%\n", percentage);
+}
 
-    case 3:
-        printf("Enter Number2 : ");
-        scanf("%f",&num2);
-        printf("%.2f\n",num1*num2);
-        break;
+int main() {
+    Student student;
 
-    case 4:
-        printf("Enter Number2 : ");
-        scanf("%f",&num2);
-        printf("%.2f\n",num1/num2);
-        break;
+    printf("Enter Roll No: ");
+    scanf("%d", &student.rollNo);
 
-    default:
-        printf("Enter Valid operator");
-        break;
-    }
+    printf("Enter Name: ");
+    scanf(" %[^\n]", student.name);
+
+    printf("Enter Physics Marks: ");
+    scanf("%f", &student.physicsMarks);
+
+    printf("Enter Math Marks: ");
+    scanf("%f", &student.mathMarks);
+
+    printf("Enter Chemistry Marks: ");
+    scanf("%f", &student.chemistryMarks);
+
+    printf("\n--- Student Summary ---\n");
+    printSummary(student);
 
     return 0;
 }
