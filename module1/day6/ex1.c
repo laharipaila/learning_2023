@@ -1,61 +1,62 @@
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 
-struct Complex {
-    double real;
-    double imaginary;
+// Structure for Student
+struct Student {
+    int rollno;
+    char name[20];
+    float marks;
 };
 
-// Function to read a complex number
-void readComplex(struct Complex* c) {
-    printf("Enter real part: ");
-    scanf("%lf", &(c->real));
-    printf("Enter imaginary part: ");
-    scanf("%lf", &(c->imaginary));
-}
+// Function to parse the string and initialize the array of structures
+void parse_string(const char* input, struct Student* students, int num_students) {
+    char* token;
 
-// Function to write a complex number
-void writeComplex(struct Complex c) {
-    printf("Complex number: %.2lf + %.2lfi\n", c.real, c.imaginary);
-}
+    // Copy the input string to avoid modifying the original string
+    char* input_copy = strdup(input);
 
-// Function to add two complex numbers
-struct Complex addComplex(struct Complex c1, struct Complex c2) {
-    struct Complex result;
-    result.real = c1.real + c2.real;
-    result.imaginary = c1.imaginary + c2.imaginary;
-    return result;
-}
+    // Split the string using strtok
+    token = strtok(input_copy, " ");
 
-// Function to multiply two complex numbers
-struct Complex multiplyComplex(struct Complex c1, struct Complex c2) {
-    struct Complex result;
-    result.real = c1.real * c2.real - c1.imaginary * c2.imaginary;
-    result.imaginary = c1.real * c2.imaginary + c1.imaginary * c2.real;
-    return result;
+    // Iterate over each token and initialize the structure members
+    for (int i = 0; i < num_students; i++) 
+     // Read the rollno, name, and marks from the tokens
+        students[i].rollno = atoi(token);
+
+        token = strtok(NULL, " ");
+        strcpy(students[i].name, token);
+
+        token = strtok(NULL, " ");
+        students[i].marks = atof(token);
+
+        // Move to the next set of tokens
+        token = strtok(NULL, " ");
+    }
+
+    // Free the copied string
+    free(input_copy);
 }
 
 int main() {
-    struct Complex complex1, complex2, sum, product;
+    const char* input = "1001 Aron 100.00";
+    int num_students = 1;
 
-    printf("Enter the first complex number:\n");
-    readComplex(&complex1);
+    // Create an array of structures
+    struct Student* students = (struct Student*)malloc(num_students * sizeof(struct Student));
 
-    printf("\nEnter the second complex number:\n");
-    readComplex(&complex2);
+    // Parse the string and initialize the array of structures
+    parse_string(input, students, num_students);
+    // Print the student details
+    for (int i = 0; i < num_students; i++) {
+        printf("Student %d:\n", i + 1);
+        printf("Roll No: %d\n", students[i].rollno);
+        printf("Name: %s\n", students[i].name);
+        printf("Marks: %.2f\n", students[i].marks);
+    }
 
-    printf("\nFirst complex number:\n");
-    writeComplex(complex1);
-    
-    printf("\nSecond complex number:\n");
-    writeComplex(complex2);
-
-    sum = addComplex(complex1, complex2);
-    printf("\nSum of complex numbers:\n");
-    writeComplex(sum);
-
-    product = multiplyComplex(complex1, complex2);
-    printf("\nProduct of complex numbers:\n");
-    writeComplex(product);
+    // Free the memory allocated for the array of structures
+    free(students);
 
     return 0;
 }
