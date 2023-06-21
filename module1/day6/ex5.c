@@ -1,43 +1,50 @@
 #include <stdio.h>
-#include <stdlib.h>
+#include <string.h>
 
 struct Student {
-    char name[50];
-    int age;
+    int rollno;
+    char name[20];
     float marks;
 };
 
+// Function to perform a search operation based on the name of the student
+void search_student(const struct Student* students, int num_students, const char* search_name) {
+    int found = 0;
+
+    for (int i = 0; i < num_students; i++) {
+        if (strcmp(students[i].name, search_name) == 0) {
+            printf("Student Found:\n");
+            printf("Roll No: %d\n", students[i].rollno);
+            printf("Name: %s\n", students[i].name);
+            printf("Marks: %.2f\n", students[i].marks);
+            printf("\n");
+
+            found = 1;
+            break;
+   }
+    }
+
+    if (!found) {
+        printf("Student with name '%s' not found.\n\n", search_name);
+    }
+}
+
 int main() {
-    int n;
+    int num_students = 4;
+    struct Student students[] = {
+        { 1001, "John", 85.5 },
+        { 1002, "Alice", 92.0 },
+        { 1003, "Bob", 78.8 },
+        { 1004, "Emma", 91.2 }
+    };
 
-    printf("Enter the number of students: ");
-    scanf("%d", &n);
+    char search_name[20];
 
-    struct Student* students = (struct Student*)malloc(n * sizeof(struct Student));
+    printf("Enter the name of the student to search: ");
+    scanf("%s", search_name);
 
-    if (students == NULL) {
-        printf("Memory allocation failed. Exiting program.\n");
-        return 1;
-    }
-    for (int i = 0; i < n; i++) {
-        printf("\nEnter details for student %d:\n", i + 1);
-        printf("Name: ");
-        scanf("%s", students[i].name);
-        printf("Age: ");
-        scanf("%d", &(students[i].age));
-        printf("Marks: ");
-        scanf("%f", &(students[i].marks));
-    }
-
-    printf("\nStudent Details:\n");
-    for (int i = 0; i < n; i++) {
-        printf("\nStudent %d\n", i + 1);
-        printf("Name: %s\n", students[i].name);
-        printf("Age: %d\n", students[i].age);
-        printf("Marks: %.2f\n", students[i].marks);
-    }
-
-    free(students);
+    // Perform the search operation based on the name of the student
+    search_student(students, num_students, search_name);
 
     return 0;
 }
